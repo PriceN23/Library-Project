@@ -1,6 +1,6 @@
 //Test file
 #include <iostream>
-#include<string>
+#include <string>
 
 
 int main() {
