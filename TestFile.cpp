@@ -1,8 +1,9 @@
 //Test file
-#include<string> 
-
-int main(){
+#include <iostream>
 
 
-    return 2;
+int main() {
+	std::cout << "Hello, World!" << std::endl;
+
+	return 0;
 }
