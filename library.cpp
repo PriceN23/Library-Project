@@ -2,13 +2,22 @@
 #include <string>
 #include "library.h"
 
+library::library() {
+	title = "Untitled";
+	author = "Unknown Artist";
+	genre = "Fiction";
+	page_count = 100;
+	published = 2000;
+	reserved = "Yes";
+}
+
 // custom constructor
 library::library(std::string title, std::string author,
-	std::string genre, int pages, int published, bool reserved) {
+	std::string genre, int page_count, int published, std::string reserved) {
 	set_title(title);
 	set_author(author);
 	set_genre(genre);
-	set_pages(pages);
+	set_page_count(page_count);
 	set_published(published);
 	set_reserved(reserved);
 }
@@ -26,15 +35,15 @@ std::string library::get_genre() const {
 	return genre;
 }
 
-int library::get_pages() const {
-	return pages;
+int library::get_page_count() const {
+	return page_count;
 }
 
 int library::get_published() const {
 	return published;
 }
 
-bool library::get_reserved() const {
+std::string library::get_reserved() const {
 	return reserved;
 }
 
@@ -68,9 +77,9 @@ void library::set_genre(std::string genre) {
 	}
 }
 
-void library::set_pages(int pages) {
-	if (pages > 0 && pages < 25000) {
-		this->pages = pages;
+void library::set_page_count(int page_count) {
+	if (page_count > 0 && page_count < 25000) {
+		this->page_count = page_count;
 	}
 	else {
 		throw std::exception("Page length must be int within range 1-25000");
@@ -78,7 +87,7 @@ void library::set_pages(int pages) {
 }
 
 void library::set_published(int published) {
-	if (published >= 868 && pages <= 2025) {
+	if (published >= 868 && published <= 2025) {
 		this->published = published;
 	}
 	else {
@@ -86,16 +95,19 @@ void library::set_published(int published) {
 	}
 }
 
-void library::set_reserved(bool reserved) {
-	if (reserved == true) {
+void library::set_reserved(std::string reserved) {
+	if (reserved.length() > 0 && (reserved == "Yes" || reserved == "yes" 
+		|| reserved == "No" || reserved == "no")) {
 		this->reserved = reserved;
 	}
-	else if (reserved != false) {
+	else {
 		throw std::exception("Reserved must be case sensitive true or fale.");
 	}
 }
 
 // print
 void library::print() const {
-	std::cout << "Print template" << std::endl;
+	std::cout << "Title: " << get_title() << "\nAuthor: " << get_author() << "\t\tGenre: "
+		<< get_genre() << "\t\tPage Count: " << get_page_count() << "\t\tPublished: " 
+		<< get_published() << "\t\tReserved: " << get_reserved() << std::endl << std::endl;
 }
