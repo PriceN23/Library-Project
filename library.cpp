@@ -96,8 +96,7 @@ void library::set_published(unsigned short published) {
 }
 
 void library::set_reserved(std::string reserved) {
-	if (reserved.length() > 0 && (reserved == "Yes" || reserved == "yes" 
-		|| reserved == "No" || reserved == "no")) {
+	if (reserved.length() > 0 && (reserved == "Yes" || reserved == "No")) {
 		this->reserved = reserved;
 	}
 	else {
@@ -107,7 +106,7 @@ void library::set_reserved(std::string reserved) {
 
 // print
 void library::print() const {
-	if (get_reserved() == "No" || get_reserved() == "no") {
+	if (get_reserved() == "No") {
 		std::cout << "'" << get_title() << "' By " << get_author() << ", Published " 
 			<< get_published() << " [" << get_genre() << "] (Page Count: " 
 			<< get_page_count() << ") [Available]" << std::endl;

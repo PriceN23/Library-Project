@@ -7,9 +7,9 @@ private:
 	std::string title;
 	std::string author;
 	std::string genre;
-	unsigned short page_count;			// page length 
+	unsigned short page_count; // page length 
 	unsigned short published;
-	std::string reserved;		// checked out
+	std::string reserved; // checked out
 
 	// these should not be altered unless done direclty through the library constructor for newly archived books
 	void set_title(std::string title);
@@ -31,7 +31,7 @@ public:
 	unsigned short get_published() const;
 	std::string get_reserved() const;
 
-	// reserved can be set true or false as needed
+	// reserved can be set Yes or No as needed
 	void set_reserved(std::string reserved);
 
 	void print() const;
