@@ -19,7 +19,7 @@ int get_line_count(const std::string& path) {
 	return count;
 }
 
-library* read_books(const std::string& path, int count) {
+library* fill_archive(const std::string& path, int count) {
 	library* archive = new library[count];
 
 	std::ifstream stream;
@@ -59,11 +59,9 @@ library* read_books(const std::string& path, int count) {
 int main() {
 	std::string path = "Data\\Library-List.csv";
 
-	std::cout << "Test" << std::endl;
-
 	int num_books = get_line_count(path) - 1;
 
-	library* archive = read_books(path, num_books);
+	library* archive = fill_archive(path, num_books);
 	
 	for (int i = 0; i < num_books; i++) {
 		archive[i].print();

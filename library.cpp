@@ -107,7 +107,14 @@ void library::set_reserved(std::string reserved) {
 
 // print
 void library::print() const {
-	std::cout << "Title: " << get_title() << "\nAuthor: " << get_author() << "\t\tGenre: "
-		<< get_genre() << "\t\tPage Count: " << get_page_count() << "\t\tPublished: " 
-		<< get_published() << "\t\tReserved: " << get_reserved() << std::endl << std::endl;
+	if (get_reserved() == "No" || get_reserved() == "no") {
+		std::cout << "'" << get_title() << "' By " << get_author() << ", Published " 
+			<< get_published() << " [" << get_genre() << "] (Page Count: " 
+			<< get_page_count() << ") [Available]" << std::endl;
+	}
+	else {
+		std::cout << "'" << get_title() << "' By " << get_author() << ", Published "
+			<< get_published() << " [" << get_genre() << "] (Page Count: "
+			<< get_page_count() << ") [Checked Out]" << std::endl;
+	}
 }
