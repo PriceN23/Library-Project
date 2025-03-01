@@ -32,7 +32,7 @@ library* fill_archive(const std::string& path, int count) {
 
 		for (int i = 0; i < count; i++) {
 			std::getline(stream, line, ',');
-			int published = std::stoi(line);
+			unsigned short published = std::stoi(line);
 			
 			std::getline(stream, line, ',');
 			std::string title = line;
@@ -41,7 +41,7 @@ library* fill_archive(const std::string& path, int count) {
 			std::string author = line;
 
 			std::getline(stream, line, ',');
-			int page_count = std::stoi(line);
+			unsigned short page_count = std::stoi(line);
 
 			std::getline(stream, line, ',');
 			std::string genre = line;

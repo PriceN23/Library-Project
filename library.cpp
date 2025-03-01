@@ -13,7 +13,7 @@ library::library() {
 
 // custom constructor
 library::library(std::string title, std::string author,
-	std::string genre, int page_count, int published, std::string reserved) {
+	std::string genre, unsigned short page_count, unsigned short published, std::string reserved) {
 	set_title(title);
 	set_author(author);
 	set_genre(genre);
@@ -35,11 +35,11 @@ std::string library::get_genre() const {
 	return genre;
 }
 
-int library::get_page_count() const {
+unsigned short library::get_page_count() const {
 	return page_count;
 }
 
-int library::get_published() const {
+unsigned short library::get_published() const {
 	return published;
 }
 
@@ -77,7 +77,7 @@ void library::set_genre(std::string genre) {
 	}
 }
 
-void library::set_page_count(int page_count) {
+void library::set_page_count(unsigned short page_count) {
 	if (page_count > 0 && page_count < 25000) {
 		this->page_count = page_count;
 	}
@@ -86,7 +86,7 @@ void library::set_page_count(int page_count) {
 	}
 }
 
-void library::set_published(int published) {
+void library::set_published(unsigned short published) {
 	if (published >= 868 && published <= 2025) {
 		this->published = published;
 	}
