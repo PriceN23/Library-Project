@@ -2,7 +2,22 @@
 #include <string>
 #include <fstream>
 #include <cctype>
+#include <algorithm>
 #include "library.h"
+
+void invalid_entry() {
+	std::cout << "Invailid entry, please make another selection: ";
+}
+
+bool verify_int(const std::string& input) {
+	for (int i = 0; i < input.length(); i++) {
+		if (!std::isdigit(input[i])) {
+			return false;
+		}
+	}
+
+	return true;
+}
 
 int get_line_count(const std::string& path) {
 	std::ifstream stream;
@@ -18,6 +33,36 @@ int get_line_count(const std::string& path) {
 		stream.close();
 	}
 	return count;
+}
+
+void sort_ascending(library* archive, int num_books) {
+	for (int i = 0; i < num_books - 1; i++) {
+		int min_index = i;
+
+		for (int j = i + 1; j < num_books; j++) {
+			if (archive[j].get_page_count() < archive[min_index].get_page_count()) {
+				min_index = j;
+			}
+		}
+		if (min_index != i) {
+			std::swap(archive[i], archive[min_index]);
+		}
+	}
+}
+
+void sort_descending(library* archive, int num_books) {
+	for (int i = 0; i < num_books - 1; i++) {
+		int max_index = i;
+
+		for (int j = i + 1; j < num_books; j++) {
+			if (archive[j].get_page_count() > archive[max_index].get_page_count()) {
+				max_index = j;
+			}
+		}
+		if (max_index != i) {
+			std::swap(archive[i], archive[max_index]);
+		}
+	}
 }
 
 library* fill_archive(const std::string& path, int count) {
@@ -55,34 +100,6 @@ library* fill_archive(const std::string& path, int count) {
 		stream.close();
 	}
 	return archive;
-}
-
-void invalid_entry() {
-	std::cout << "Invailid entry, please make another selection";
-}
-
-bool verify_int(const std::string& input) {
-	for (int i = 0; i < input.length(); i++) {
-		if (!std::isdigit(input[i])) {
-			return true;
-		}
-	}
-	
-	return false;
-}
-
-void print_archive(const library* archive, int num_books) {
-	for (int i = 0; i < num_books; i++) {
-		archive[i].print();
-	}
-}
-
-void print_available_books(const library* archive, int num_books) {
-	for (int i = 0; i < num_books; i++) {
-		if (archive[i].get_reserved() == "No") {
-			archive[i].print();
-		}
-	}
 }
 
 int get_num_authors(const library* archive, int num_books) {
@@ -132,11 +149,203 @@ std::string* build_array_of_authors(const library* archive, int num_books, int n
 	return authors;
 }
 
+int get_oldest_book(const library* archive, int num_books) {
+	int oldest_book = 2030;
+
+	for (int i = 0; i < num_books; i++) {
+		if (archive[i].get_published() < oldest_book) {
+			oldest_book = archive[i].get_published();
+		}
+	}
+
+	return oldest_book;
+}
+
+int get_newest_book(const library* archive, int num_books) {
+	int newest_book = 0;
+
+	for (int i = 0; i < num_books; i++) {
+		if (archive[i].get_published() > newest_book) {
+			newest_book = archive[i].get_published();
+		}
+	}
+
+	return newest_book;
+}
+
+void prompt_sort_by_page_length(library* archive, int num_books) {
+	std::cout << "Sort library archive" << std::endl << "1 Ascending order" 
+		<< std::endl << "2 Descending order" << std::endl;
+
+	std::cout << std::endl << "Enter 1 or 2 to make selection: ";
+
+	int selected = 0;
+	std::string line;
+
+	do {
+		std::getline(std::cin, line);
+
+		if (verify_int(line) == false
+			|| line.empty() == true
+			|| std::stoi(line) < 1
+			|| std::stoi(line) > 2) {
+
+			invalid_entry();
+		}
+		else {
+			selected = std::stoi(line);
+		}
+	} while (selected == 0);
+
+	if (selected == 1) {
+		sort_ascending(archive, num_books);
+	}
+	else if (selected == 2) {
+		sort_descending(archive, num_books);
+	}
+
+	std::cout << std::endl << "Sort successful!" << std::endl;
+}
+
+void print_archive(const library* archive, int num_books) {
+	std::cout << "Library archive" << std::endl;
+
+	for (int i = 0; i < num_books; i++) {
+		archive[i].print();
+	}
+}
+
+void print_available_books(const library* archive, int num_books) {
+	std::cout << "Available books in library archive" << std::endl;
+	
+	for (int i = 0; i < num_books; i++) {
+		if (archive[i].get_reserved() == "No") {
+			archive[i].print();
+		}
+	}
+}
+
 void print_authors(const std::string* authors, int num_authors) {
 	std::cout << "Authors" << std::endl;
 
 	for (int i = 0; i < num_authors; i++) {
 		std::cout << i + 1 << " " << authors[i] << std::endl;
+	}
+}
+
+void print_books_of_selected_author(const library* archive, int num_books, const std::string* authors, int num_authors) {
+	std::cout << std::endl << "Select author 1 - " << num_authors << " to print book list: ";
+
+	int selected = 0;
+	std::string line;
+
+	do {
+		std::getline(std::cin, line);
+
+		if (verify_int(line) == false
+			|| line.empty() == true
+			|| std::stoi(line) < 1
+			|| std::stoi(line) > num_authors) {
+
+			invalid_entry();
+		}
+		else {
+			selected = std::stoi(line);
+		}
+	} while (selected < 1 || selected > num_authors);
+
+	selected--;
+	std::cout << std::endl;
+
+	for (int i = 0; i < num_books; i++) {
+		if (archive[i].get_author().compare(authors[selected]) == false) {
+			archive[i].print();
+		}
+	}
+}
+
+void print_books_after_certain_year(const library* archive, int num_books) {
+	int oldest_book = get_oldest_book(archive, num_books);
+	int newest_book = get_newest_book(archive, num_books);
+
+	std::cout << "Date range of books currently in library archive " << oldest_book << " - " << newest_book << std::endl;
+	std::cout << "Enter year to display all books published on or after entered date: ";
+
+	int selected = 0;
+	std::string line;
+
+	do {
+		std::getline(std::cin, line);
+
+		if (verify_int(line) == false
+			|| line.empty() == true) {
+
+			invalid_entry();
+		}
+		else {
+			selected = std::stoi(line);
+		}
+	} while (selected == 0);
+
+	std::cout << std::endl;
+
+	for (int i = 0; i < num_books; i++) {
+		if (archive[i].get_published() >= selected) {
+			archive[i].print();
+		}
+	}
+}
+
+int available_books_for_checkout(const library* archive, int num_books) {
+	std::cout << "Available books in library archive" << std::endl;
+
+	int counter = 1;
+
+	for (int i = 0; i < num_books; i++) {
+		if (archive[i].get_reserved() == "No") {
+			std::cout << counter << " ";
+			counter++;
+
+			archive[i].print();
+		}
+	}
+
+	return counter;
+}
+
+// modify this for stech goal 5.
+void check_out_book(library* archive, int num_books) {
+	std::cout << "Books available for check out" << std::endl;
+
+	int num_books_available = available_books_for_checkout(archive, num_books);
+
+	std::string title = "Unknown";
+	bool title_available = false;
+
+	std::cout << std::endl << "Enter title of book to check out: ";
+
+	do {
+		std::getline(std::cin, title);
+
+		for (int i = 0; i < num_books; i++) {
+			if (archive[i].get_title().compare(title) == false) {
+				title_available = true;
+			}
+		}
+
+		if (title.empty() == true || title_available == false) {
+			invalid_entry();
+		}
+		
+	} while (title_available == false);
+
+	std::cout << std::endl;
+
+	for (int i = 0; i < num_books; i++) {
+		if (archive[i].get_reserved() == "No" && archive[i].get_title() == title) {
+			archive[i].set_reserved("Yes");
+			std::cout << "Checked out '" << title << "' successfully" << std::endl;
+		}
 	}
 }
 
@@ -155,23 +364,21 @@ int menu() {
 	int selected = 0;
 	std::string line;
 
+	std::cout << std::endl << "Enter 1 - 9 to make a selection: ";
+
 	do {
-		std::cout << std::endl << "Select 1 - 9: ";
-		
 		std::getline(std::cin, line);
 
-		if (verify_int(line) == true 
+		if (verify_int(line) == false 
 			|| line.empty() == true
 			|| std::stoi(line) < 1 
 			|| std::stoi(line) > 9) {
 			
-			std::cout << std::endl;
 			invalid_entry();
 		}
 		else {
 			selected = std::stoi(line);
 		}
-
 	} while (selected == 0);
 
 	std::cout << std::endl;
@@ -179,33 +386,76 @@ int menu() {
 	return selected;
 }
 
-void menu_selection(int selected, const library* archive, int num_books, 
+void back_to_menu() {
+	std::cout << std::endl << "Press 1 to return back to menu: ";
+
+	int selected = 0;
+	std::string line;
+
+	do {
+		std::getline(std::cin, line);
+
+		if (verify_int(line) == false
+			|| line.empty() == true
+			|| std::stoi(line) != 1) {
+
+			invalid_entry();
+		}
+		else {
+			selected = std::stoi(line);
+		}
+	} while (selected != 1);
+}
+
+void menu_selection(int selected, library* archive, int num_books, 
 		const std::string* authors, int num_authors) {
 	switch (selected) {
 	case 1:
+		// Print out all the books owned by the library
 		print_archive(archive, num_books);
+		back_to_menu();
 		break;
 	case 2:
+		// Print out all the books which are currently available to check out
 		print_available_books(archive, num_books);
+		back_to_menu();
 		break;
 	case 3:
+		// Print out all the books by a give author
 		print_authors(authors, num_authors);
+		print_books_of_selected_author(archive, num_books, authors, num_authors);
+		back_to_menu();
 		break;
 	case 4:
+		// Print out all the books published on or after a given year
+		print_books_after_certain_year(archive, num_books);
+		back_to_menu();
 		break;
 	case 5:
+		// Sort all of the books owned by the library by page length
+		prompt_sort_by_page_length(archive, num_books);
+		back_to_menu();
 		break;
 	case 6:
+		// Print out all the information about a single book by searching its title
 		break;
 	case 7:
+		// Check out a book
+		check_out_book(archive, num_books);
+		back_to_menu();
 		break;
 	case 8:
+		// Return a book
+		//reshelf_book(archive, num_books);
+		back_to_menu();
 		break;
 	case 9:
+		// Quit
 		std::cout << "Thank you, have a great day" << std::endl;
 		break;
 	default:
 		invalid_entry();
+		back_to_menu();
 		break;
 	}
 }
