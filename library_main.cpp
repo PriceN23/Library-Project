@@ -61,16 +61,7 @@ void invalid_entry() {
 	std::cout << "Invailid entry, please make another selection";
 }
 
-bool verify_input_not_empty(const std::string& input) {
-	if (input.empty()) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
-bool verify_input_int(const std::string& input) {
+bool verify_int(const std::string& input) {
 	for (int i = 0; i < input.length(); i++) {
 		if (!std::isdigit(input[i])) {
 			return true;
@@ -94,6 +85,61 @@ void print_available_books(const library* archive, int num_books) {
 	}
 }
 
+int get_num_authors(const library* archive, int num_books) {
+	int num_authors = 0;
+
+	for (int i = 0; i < num_books; i++) {
+		bool author_needs_added_to_counter = true;
+
+		for (int j = i + 1; j < num_books; j++) {
+			if (archive[i].get_author().compare(archive[j].get_author()) == false) {
+				author_needs_added_to_counter = false;
+			}
+		}
+
+		if (author_needs_added_to_counter == true) {
+			num_authors++;
+		}
+	}
+
+	return num_authors;
+}
+
+std::string* build_array_of_authors(const library* archive, int num_books, int num_authors) {
+	std::string* authors = new std::string[num_authors];
+
+	for (int i = 0; i < num_books; i++) {
+		bool author_needs_added_to_authors = true;
+
+		for (int j = 0; j < num_authors; j++) {
+			if (archive[i].get_author().compare(authors[j]) == false) {
+				author_needs_added_to_authors = false;
+			}
+		}
+
+		if (author_needs_added_to_authors == true) {
+			bool author_added = false;
+
+			for (int j = 0; j < num_authors; j++) {
+				if (authors[j].empty() == true && author_added == false) {
+					authors[j] = archive[i].get_author();
+					author_added = true;
+				}
+			}
+		}
+	}
+
+	return authors;
+}
+
+void print_authors(const std::string* authors, int num_authors) {
+	std::cout << "Authors" << std::endl;
+
+	for (int i = 0; i < num_authors; i++) {
+		std::cout << i + 1 << " " << authors[i] << std::endl;
+	}
+}
+
 int menu() {
 	std::cout << std::endl << "Main Menu" << std::endl
 		<< "1 Print out all the books owned by the library" << std::endl 
@@ -114,8 +160,8 @@ int menu() {
 		
 		std::getline(std::cin, line);
 
-		if (verify_input_int(line) == true 
-			|| verify_input_not_empty(line) == true 
+		if (verify_int(line) == true 
+			|| line.empty() == true
 			|| std::stoi(line) < 1 
 			|| std::stoi(line) > 9) {
 			
@@ -133,7 +179,8 @@ int menu() {
 	return selected;
 }
 
-void menu_selection(const library* archive, int num_books, int selected) {
+void menu_selection(int selected, const library* archive, int num_books, 
+		const std::string* authors, int num_authors) {
 	switch (selected) {
 	case 1:
 		print_archive(archive, num_books);
@@ -142,6 +189,7 @@ void menu_selection(const library* archive, int num_books, int selected) {
 		print_available_books(archive, num_books);
 		break;
 	case 3:
+		print_authors(authors, num_authors);
 		break;
 	case 4:
 		break;
@@ -169,14 +217,19 @@ int main() {
 
 	library* archive = fill_archive(path, num_books);
 
+	int num_authors = get_num_authors(archive, num_books);
+
+	std::string* authors = build_array_of_authors(archive, num_books, num_authors);
+
 	int selected = 0;
 
 	do {
 		selected = menu();
-		menu_selection(archive, num_books, selected);
+		menu_selection(selected, archive, num_books, authors, num_authors);
 
 	} while (selected != 9);
 
+	delete[] authors;
 	delete[] archive;
 
 	return 0;
