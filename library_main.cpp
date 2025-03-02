@@ -219,6 +219,12 @@ void print_archive(const library* archive, int num_books) {
 	}
 }
 
+void print_archive_titles(const library* archive, int num_books) {
+	for (int i = 0; i < num_books; i++) {
+		std::cout << archive[i].get_title() << std::endl;
+	}
+}
+
 void print_available_books(const library* archive, int num_books) {
 	std::cout << "Available books in library archive" << std::endl;
 	
@@ -310,6 +316,46 @@ void print_books_after_certain_year(const library* archive, int num_books) {
 	}
 }
 
+void list_of_titles(const library* archive, int num_books) {
+	std::cout << "Titles in library archive" << std::endl;
+
+	print_archive_titles(archive, num_books);
+
+	std::string title = "Unknown";
+	bool title_available = false;
+	int selected = 0;
+
+	std::cout << std::endl << "Titles are case and space sensitive, enter 1 to return to menu" << std::endl;
+	std::cout << "Enter title of book to print all informaiton on that title: ";
+
+	do {
+		std::getline(std::cin, title);
+
+		if (verify_int(title) == true && title.empty() == false && std::stoi(title) == 1) {
+			selected = std::stoi(title);
+		}
+
+		if (selected == 0) {
+			for (int i = 0; i < num_books; i++) {
+				if (archive[i].get_title().compare(title) == false) {
+					title_available = true;
+				}
+			}
+
+			if (title.empty() == true || title_available == false) {
+				invalid_entry();
+			}
+		}
+	} while (title_available == false && selected == 0);
+
+	std::cout << std::endl;
+
+	for (int i = 0; i < num_books; i++) {
+		if (archive[i].get_title() == title) {
+			archive[i].print();
+		}
+	}
+}
 // modify this for stech goal 5.
 void check_out_book(library* archive, int num_books) {
 	print_available_books(archive, num_books);
@@ -476,6 +522,8 @@ void menu_selection(int selected, library* archive, int num_books,
 		break;
 	case 6:
 		// Print out all the information about a single book by searching its title
+		list_of_titles(archive, num_books);
+		back_to_menu();
 		break;
 	case 7:
 		// Check out a book
