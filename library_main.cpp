@@ -92,7 +92,7 @@ void selection_sort(library* archive, int num_books, int selected) {
 
 library* fill_archive(const std::string& path, int count) {
 	library* archive = new library[count];
-std::cout << count;
+
 	std::ifstream stream;
 	stream.open(path);
 
