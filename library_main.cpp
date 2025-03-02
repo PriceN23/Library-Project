@@ -13,6 +13,5 @@ int main() {
 	delete[] archive;
 
 	*/
-
 	return 0;
 }

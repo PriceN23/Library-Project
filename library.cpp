@@ -44,7 +44,7 @@ void library::set_title(std::string title) {
 		this->title = title;
 	}
 	else {
-		throw std::exception("Title must not be blank");
+		throw std::invalid_argument("Title must not be blank");
 	}
 }
 
@@ -53,7 +53,7 @@ void library::set_author(std::string author) {
 		this->author = author;
 	}
 	else {
-		throw std::exception("Author must not be blank");
+		throw std::invalid_argument("Author must not be blank");
 	}
 }
 
@@ -64,7 +64,7 @@ void library::set_genre(std::string genre) {
 		this->genre = genre;
 	}
 	else {
-		throw std::exception("Please enter genre fiction, nonfiction, or biography");
+		throw std::invalid_argument("Please enter genre fiction, nonfiction, or biography");
 	}
 }
 
@@ -73,7 +73,7 @@ void library::set_pages(int pages) {
 		this->pages = pages;
 	}
 	else {
-		throw std::exception("Page length must be int within range 1-25000");
+		throw std::invalid_argument("Page length must be int within range 1-25000");
 	}
 }
 
@@ -82,7 +82,7 @@ void library::set_published(int published) {
 		this->published = published;
 	}
 	else {
-		throw std::exception("Published date must be int within range 868-2025");
+		throw std::invalid_argument("Published date must be int within range 868-2025");
 	}
 }
 
@@ -91,7 +91,7 @@ void library::set_reserved(bool reserved) {
 		this->reserved = reserved;
 	}
 	else if (reserved != false) {
-		throw std::exception("Reserved must be case sensitive true or fale.");
+		throw std::invalid_argument("Reserved must be case sensitive true or fale.");
 	}
 }
 
