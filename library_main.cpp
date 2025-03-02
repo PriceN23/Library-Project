@@ -39,7 +39,7 @@ int get_line_count(const std::string& path) {
 	return count;
 }
 
-void sort_ascending(library* archive, int num_books) {
+void sort_page_length_ascending(library* archive, int num_books) {
 	for (int i = 0; i < num_books - 1; i++) {
 		int min_index = i;
 
@@ -54,7 +54,7 @@ void sort_ascending(library* archive, int num_books) {
 	}
 }
 
-void sort_descending(library* archive, int num_books) {
+void sort_page_length_descending(library* archive, int num_books) {
 	for (int i = 0; i < num_books - 1; i++) {
 		int max_index = i;
 
@@ -66,6 +66,26 @@ void sort_descending(library* archive, int num_books) {
 		if (max_index != i) {
 			std::swap(archive[i], archive[max_index]);
 		}
+	}
+}
+
+// Stretch goal #1: Some base templete function names have been added that can be build one 
+void selection_sort(library* archive, int num_books, int selected) {
+	switch (selected) {
+	case 1:
+		sort_page_length_ascending(archive, num_books);
+		break;
+	case 2:
+		sort_page_length_descending(archive, num_books);
+		break;
+	case 3:
+		//sort_alphobtical_ascending(archive, num_books); // New function can be created
+		break;
+	case 4:
+		//sort_alphobtical_descending(archive, num_books); // New function can be created
+		break;
+	default:
+		break;
 	}
 }
 
@@ -177,9 +197,11 @@ int get_newest_book(const library* archive, int num_books) {
 	return newest_book;
 }
 
-void prompt_sort_by_page_length(library* archive, int num_books) {
-	std::cout << "Sort library archive" << std::endl << "1 Ascending order" 
-		<< std::endl << "2 Descending order" << std::endl;
+// Stretch goal #1, modify this code to accomadate new sorting types
+void prompt_sort(library* archive, int num_books) {
+	std::cout << "Sort library archive" << std::endl 
+		<< "1 Ascending order" << std::endl 
+		<< "2 Descending order" << std::endl;
 
 	std::cout << std::endl << "Enter 1 or 2 to make selection: ";
 
@@ -201,12 +223,7 @@ void prompt_sort_by_page_length(library* archive, int num_books) {
 		}
 	} while (selected == 0);
 
-	if (selected == 1) {
-		sort_ascending(archive, num_books);
-	}
-	else if (selected == 2) {
-		sort_descending(archive, num_books);
-	}
+	selection_sort(archive, num_books, selected);
 
 	std::cout << std::endl << "Sort successful!" << std::endl;
 }
@@ -316,6 +333,24 @@ void print_books_after_certain_year(const library* archive, int num_books) {
 	}
 }
 
+void back_to_menu() {
+	std::cout << std::endl << "Press 1 to return back to menu: ";
+
+	int selected = 0;
+	std::string line;
+
+	do {
+		std::getline(std::cin, line);
+
+		if (verify_int(line) == false || line.empty() == true || std::stoi(line) != 1) {
+			invalid_entry();
+		}
+		else {
+			selected = std::stoi(line);
+		}
+	} while (selected != 1);
+}
+
 void list_of_titles(const library* archive, int num_books) {
 	std::cout << "Titles in library archive" << std::endl;
 
@@ -353,9 +388,12 @@ void list_of_titles(const library* archive, int num_books) {
 	for (int i = 0; i < num_books; i++) {
 		if (archive[i].get_title() == title) {
 			archive[i].print();
+
+			back_to_menu();
 		}
 	}
 }
+
 // modify this for stech goal 5.
 void check_out_book(library* archive, int num_books) {
 	print_available_books(archive, num_books);
@@ -376,7 +414,7 @@ void check_out_book(library* archive, int num_books) {
 
 		if (selected == 0) {
 			for (int i = 0; i < num_books; i++) {
-				if (archive[i].get_title().compare(title) == false) {
+				if (archive[i].get_title().compare(title) == false && archive[i].get_reserved() == "No") {
 					title_available = true;
 				}
 			}
@@ -393,6 +431,8 @@ void check_out_book(library* archive, int num_books) {
 		if (archive[i].get_reserved() == "No" && archive[i].get_title() == title) {
 			archive[i].set_reserved("Yes");
 			std::cout << "Checked out '" << title << "' successfully" << std::endl;
+
+			back_to_menu();
 		}
 	}
 }
@@ -416,7 +456,7 @@ void reshelf_book(library* archive, int num_books) {
 
 		if (selected == 0) {
 			for (int i = 0; i < num_books; i++) {
-				if (archive[i].get_title().compare(title) == false) {
+				if (archive[i].get_title().compare(title) == false && archive[i].get_reserved() == "Yes") {
 					title_reserved = false;
 				}
 			}
@@ -432,6 +472,8 @@ void reshelf_book(library* archive, int num_books) {
 		if (archive[i].get_reserved() == "Yes" && archive[i].get_title() == title) {
 			archive[i].set_reserved("No");
 			std::cout << "Returned '" << title << "' successfully" << std::endl;
+
+			back_to_menu();
 		}
 	}
 }
@@ -473,24 +515,6 @@ int menu() {
 	return selected;
 }
 
-void back_to_menu() {
-	std::cout << std::endl << "Press 1 to return back to menu: ";
-
-	int selected = 0;
-	std::string line;
-
-	do {
-		std::getline(std::cin, line);
-
-		if (verify_int(line) == false || line.empty() == true || std::stoi(line) != 1) {
-			invalid_entry();
-		}
-		else {
-			selected = std::stoi(line);
-		}
-	} while (selected != 1);
-}
-
 void menu_selection(int selected, library* archive, int num_books, 
 		const std::string* authors, int num_authors) {
 	switch (selected) {
@@ -517,7 +541,7 @@ void menu_selection(int selected, library* archive, int num_books,
 		break;
 	case 5:
 		// Sort all of the books owned by the library by page length
-		prompt_sort_by_page_length(archive, num_books);
+		prompt_sort(archive, num_books);
 		back_to_menu();
 		break;
 	case 6:
