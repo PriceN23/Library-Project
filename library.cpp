@@ -67,13 +67,11 @@ void library::set_author(std::string author) {
 }
 
 void library::set_genre(std::string genre) {
-	if (genre.length() > 0 && (genre == "fiction" || genre == "Fiction" 
-		|| genre == "nonfiction" || genre == "Nonfiction"
-		|| genre == "biography" || genre == "Biography")) {
+	if (genre.length() > 0) {
 		this->genre = genre;
 	}
 	else {
-		throw std::exception("Please enter genre fiction, nonfiction, or biography");
+		throw std::exception("Genre must not be blank");
 	}
 }
 

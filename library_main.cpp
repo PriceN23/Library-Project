@@ -9,6 +9,10 @@ void invalid_entry() {
 	std::cout << "Invailid entry, please make another selection: ";
 }
 
+void end_message() {
+	std::cout << "Thank you, have a great day" << std::endl;
+}
+
 bool verify_int(const std::string& input) {
 	for (int i = 0; i < input.length(); i++) {
 		if (!std::isdigit(input[i])) {
@@ -225,6 +229,16 @@ void print_available_books(const library* archive, int num_books) {
 	}
 }
 
+void print_checked_out_books(const library* archive, int num_books) {
+	std::cout << "Books able to be returned to library archive" << std::endl;
+
+	for (int i = 0; i < num_books; i++) {
+		if (archive[i].get_reserved() == "Yes") {
+			archive[i].print();
+		}
+	}
+}
+
 void print_authors(const std::string* authors, int num_authors) {
 	std::cout << "Authors" << std::endl;
 
@@ -296,48 +310,36 @@ void print_books_after_certain_year(const library* archive, int num_books) {
 	}
 }
 
-int available_books_for_checkout(const library* archive, int num_books) {
-	std::cout << "Available books in library archive" << std::endl;
-
-	int counter = 1;
-
-	for (int i = 0; i < num_books; i++) {
-		if (archive[i].get_reserved() == "No") {
-			std::cout << counter << " ";
-			counter++;
-
-			archive[i].print();
-		}
-	}
-
-	return counter;
-}
-
 // modify this for stech goal 5.
 void check_out_book(library* archive, int num_books) {
-	std::cout << "Books available for check out" << std::endl;
-
-	int num_books_available = available_books_for_checkout(archive, num_books);
+	print_available_books(archive, num_books);
 
 	std::string title = "Unknown";
 	bool title_available = false;
+	int selected = 0;
 
-	std::cout << std::endl << "Enter title of book to check out: ";
+	std::cout << std::endl << "Titles are case and space sensitive, enter 1 to return to menu" << std::endl;
+	std::cout << "Enter title of book to check out: ";
 
 	do {
 		std::getline(std::cin, title);
 
-		for (int i = 0; i < num_books; i++) {
-			if (archive[i].get_title().compare(title) == false) {
-				title_available = true;
-			}
+		if (verify_int(title) == true && title.empty() == false && std::stoi(title) == 1) {
+			selected = std::stoi(title);
 		}
 
-		if (title.empty() == true || title_available == false) {
-			invalid_entry();
-		}
-		
-	} while (title_available == false);
+		if (selected == 0) {
+			for (int i = 0; i < num_books; i++) {
+				if (archive[i].get_title().compare(title) == false) {
+					title_available = true;
+				}
+			}
+
+			if (title.empty() == true || title_available == false) {
+				invalid_entry();
+			}
+		}		
+	} while (title_available == false && selected == 0);
 
 	std::cout << std::endl;
 
@@ -345,6 +347,45 @@ void check_out_book(library* archive, int num_books) {
 		if (archive[i].get_reserved() == "No" && archive[i].get_title() == title) {
 			archive[i].set_reserved("Yes");
 			std::cout << "Checked out '" << title << "' successfully" << std::endl;
+		}
+	}
+}
+
+void reshelf_book(library* archive, int num_books) {
+	print_checked_out_books(archive, num_books);
+
+	std::string title = "Unknown";
+	bool title_reserved = true;
+	int selected = 0;
+
+	std::cout << std::endl << "Titles are case and space sensitive, enter 1 to return to menu" << std::endl;
+	std::cout << "Enter title of book to return: ";
+
+	do {
+		std::getline(std::cin, title);
+
+		if (verify_int(title) == true && title.empty() == false && std::stoi(title) == 1) {
+			selected = std::stoi(title);
+		}
+
+		if (selected == 0) {
+			for (int i = 0; i < num_books; i++) {
+				if (archive[i].get_title().compare(title) == false) {
+					title_reserved = false;
+				}
+			}
+			if (title.empty() == true || title_reserved == true) {
+				invalid_entry();
+			}
+		}
+	} while (title_reserved == true && selected == 0);
+
+	std::cout << std::endl;
+
+	for (int i = 0; i < num_books; i++) {
+		if (archive[i].get_reserved() == "Yes" && archive[i].get_title() == title) {
+			archive[i].set_reserved("No");
+			std::cout << "Returned '" << title << "' successfully" << std::endl;
 		}
 	}
 }
@@ -395,10 +436,7 @@ void back_to_menu() {
 	do {
 		std::getline(std::cin, line);
 
-		if (verify_int(line) == false
-			|| line.empty() == true
-			|| std::stoi(line) != 1) {
-
+		if (verify_int(line) == false || line.empty() == true || std::stoi(line) != 1) {
 			invalid_entry();
 		}
 		else {
@@ -442,16 +480,14 @@ void menu_selection(int selected, library* archive, int num_books,
 	case 7:
 		// Check out a book
 		check_out_book(archive, num_books);
-		back_to_menu();
 		break;
 	case 8:
 		// Return a book
-		//reshelf_book(archive, num_books);
-		back_to_menu();
+		reshelf_book(archive, num_books);
 		break;
 	case 9:
 		// Quit
-		std::cout << "Thank you, have a great day" << std::endl;
+		end_message();
 		break;
 	default:
 		invalid_entry();
