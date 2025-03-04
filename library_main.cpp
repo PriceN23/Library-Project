@@ -18,7 +18,7 @@ void invalid_entry() {
 	std::cout << "Invailid entry, please make another selection: ";
 }
 
-void end_message() {
+void end_messege() {
 	std::cout << "Thank you, have a great day" << std::endl;
 }
 
@@ -183,24 +183,6 @@ void sort_alphabetical_descending(library* archive, int num_books) {
         }
     }
 }
-void donate_book()
-{
-	std::string title, author;
-	int page_count;
-
-	std::cout << "Enter book title: ";
-	std::getline(std::cin, title);
-
-	std::cout << "Enter book author: ";
-	std::getline(std::cin, author);
-
-	std::cout << "Enter number of pages: ";
-	while (!(std::cin >> page_count) || page_count <= 0)
-	{
-		invalid_entry();
-	}
-}
-
 
 // Stretch goal #1
 void selection_sort(library* archive, int num_books, int selected) {
@@ -636,7 +618,7 @@ int menu() {
 		<< "6 Print out all the information about a single book by searching its title" << std::endl 
 		<< "7 Check out a book" << std::endl 
 		<< "8 Return a book" << std::endl 
-		<< "9 Donate a book" << std::endl
+		<< "9 ?" << std::endl
 		<< "10 Quit" << std::endl;
 
 	std::cout << std::endl << "Enter 1 - 10 to make a selection: ";
@@ -710,13 +692,13 @@ void menu_selection(int selected, library* archive, int num_books,
 		reshelf_book(archive, num_books);
 		break;
 	case 9:
-		// Donate a book
-		donate_book();
+		// Note describing case 9
+		// functions here
 		back_to_menu(); // prevents menu from printing after functions are called until user wants to return to menu. 
 		break;
 	case 10:
 		// Quit
-		end_message();
+		end_messege();
 		break;
 	default:
 		invalid_entry();
