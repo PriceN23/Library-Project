@@ -315,15 +315,15 @@ int get_newest_book(const library* archive, int num_books) {
 // Stretch goal #1
 void prompt_sort(library* archive, int num_books) {
 	std::cout << "Sort library archive" << std::endl 
-		<< "1 Ascending order" << std::endl 
-		<< "2 Descending order" << std::endl
+		<< "1 Ascending page length" << std::endl 
+		<< "2 Descending page length" << std::endl
 		<< "3 Ascending alphabetical order" << std::endl
 		<< "4 Descending alphabetical order" << std::endl;
 
-	std::cout << std::endl << "Enter 1, 2, 3 or 4 to make selection: ";
+	std::cout << std::endl << "Enter 1 - 4 to make selection: ";
 
 	int selected = 0;
-	selected = verify_input(1, 2);
+	selected = verify_input(1, 4);
 
 	/*int selected = 0;
 	std::string line;
