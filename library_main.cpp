@@ -242,7 +242,7 @@ library* fill_archive(const std::string& path, int count) {
 	return archive;
 }
 
-void donate_book(library* archive, int num_books ) {
+void donate_book(library* archive, int num_books) {
 	library* donated_archive = new library[num_books + 1];
 
 	std::string line;
@@ -258,26 +258,25 @@ void donate_book(library* archive, int num_books ) {
 	std::cout << "Published name: ";
 	std::getline(std::cin, line);
 	unsigned short published = 0;
-	if (verify_int(line) == true) {
+	if (verify_int(line) == false) {
 		published = std::stoi(line);
 	}
-std::cout << "Authors Name: ";
+
 	std::getline(std::cin, line);
 	std::string author = line;
 
-std::cout << "Page Count: ";
 	std::getline(std::cin, line);
 	unsigned short page_count = 0;
 	if (verify_int(line) == true) {
 		page_count = std::stoi(line);
 	}
-std::cout << "Genre: ";
+
 	std::getline(std::cin, line);
 	std::string genre = line;
 
 	donated_archive[num_books + 1] = library(title, author, genre, page_count, published, "No");
 
-	delete[] archive;
+	//delete[] archive;
 	delete[] donated_archive;
 
 	//return donated_archive;
@@ -601,7 +600,7 @@ void check_out_book(library* archive, int num_books) {
 		if (archive[i].get_reserved() == "No" && archive[i].get_title() == title) {
 			archive[i].set_reserved("Yes");
 			std::cout << "Checked out '" << title << "' successfully" << std::endl;
-
+			// nestle stretch goal fives function here
 			back_to_menu();
 		}
 	}
@@ -660,7 +659,7 @@ int menu() {
 		<< "6 Print out all the information about a single book by searching its title" << std::endl 
 		<< "7 Check out a book" << std::endl 
 		<< "8 Return a book" << std::endl 
-		<< "9 Donate a book" << std::endl
+		<< "9 ?" << std::endl
 		<< "10 Quit" << std::endl;
 
 	std::cout << std::endl << "Enter 1 - 10 to make a selection: ";
