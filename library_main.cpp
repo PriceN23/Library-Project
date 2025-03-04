@@ -255,7 +255,7 @@ void donate_book(library* archive, int num_books ) {
 	std::getline(std::cin, line);
 	std::string title = line;
 
-	std::cout << "Published name: ";
+	std::cout << "Published year: ";
 	std::getline(std::cin, line);
 	unsigned short published = 0;
 	if (verify_int(line) == true) {
