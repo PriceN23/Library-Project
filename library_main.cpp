@@ -185,23 +185,7 @@ void sort_alphabetical_descending(library* archive, int num_books) {
 }
 void donate_book()
 {
-	std::string title, author;
-	int page_count;
-
-	std::cout << "Enter book title: ";
-	std::getline(std::cin, title);
-
-	std::cout << "Enter book author: ";
-	std::getline(std::cin, author);
-
-	std::cout << "Enter number of pages: ";
-	page_count = verify_input();  
-
-    if (page_count <= 0) {
-        invalid_entry();
-        return;  
-    }
-    
+	
 }
 
 
