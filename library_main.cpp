@@ -184,6 +184,24 @@ void sort_alphabetical_descending(library* archive, int num_books) {
     }
 }
 
+void donate_book()
+{
+	std::string title, author;
+	int page_count;
+
+	std::cout << "Enter book title: ";
+	std::getline(std::cin, title);
+
+	std::cout << "Enter book author: ";
+	std::getline(std::cin, author);
+
+	std::cout << "Enter number of pages: ";
+	while (!(std::cin >> page_count) || page_count <= 0)
+	{
+		invalid_entry();
+	}
+}
+
 // Stretch goal #1
 void selection_sort(library* archive, int num_books, int selected) {
 	switch (selected) {
