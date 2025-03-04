@@ -261,16 +261,17 @@ void donate_book(library* archive, int num_books ) {
 	if (verify_int(line) == true) {
 		published = std::stoi(line);
 	}
-
+std::cout << "Authors Name: ";
 	std::getline(std::cin, line);
 	std::string author = line;
 
+std::cout << "Page Count: ";
 	std::getline(std::cin, line);
 	unsigned short page_count = 0;
 	if (verify_int(line) == true) {
 		page_count = std::stoi(line);
 	}
-
+std::cout << "Genre: ";
 	std::getline(std::cin, line);
 	std::string genre = line;
 
@@ -659,7 +660,7 @@ int menu() {
 		<< "6 Print out all the information about a single book by searching its title" << std::endl 
 		<< "7 Check out a book" << std::endl 
 		<< "8 Return a book" << std::endl 
-		<< "9 ?" << std::endl
+		<< "9 Donate a book" << std::endl
 		<< "10 Quit" << std::endl;
 
 	std::cout << std::endl << "Enter 1 - 10 to make a selection: ";
