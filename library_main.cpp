@@ -183,6 +183,24 @@ void sort_alphabetical_descending(library* archive, int num_books) {
         }
     }
 }
+void donate_book()
+{
+	std::string title, author;
+	int page_count;
+
+	std::cout << "Enter book title: ";
+	std::getline(std::cin, title);
+
+	std::cout << "Enter book author: ";
+	std::getline(std::cin, author);
+
+	std::cout << "Enter number of pages: ";
+	while (!(std::cin >> page_count) || page_count <= 0)
+	{
+		invalid_entry();
+	}
+}
+
 
 // Stretch goal #1
 void selection_sort(library* archive, int num_books, int selected) {
@@ -692,8 +710,8 @@ void menu_selection(int selected, library* archive, int num_books,
 		reshelf_book(archive, num_books);
 		break;
 	case 9:
-		// Note describing case 9
-		// functions here
+		// Donate a book
+		donate_book();
 		back_to_menu(); // prevents menu from printing after functions are called until user wants to return to menu. 
 		break;
 	case 10:
