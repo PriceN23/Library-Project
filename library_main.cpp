@@ -184,24 +184,6 @@ void sort_alphabetical_descending(library* archive, int num_books) {
     }
 }
 
-void donate_book()
-{
-	std::string title, author;
-	int page_count;
-
-	std::cout << "Enter book title: ";
-	std::getline(std::cin, title);
-
-	std::cout << "Enter book author: ";
-	std::getline(std::cin, author);
-
-	std::cout << "Enter number of pages: ";
-	while (!(std::cin >> page_count) || page_count <= 0)
-	{
-		invalid_entry();
-	}
-}
-
 // Stretch goal #1
 void selection_sort(library* archive, int num_books, int selected) {
 	switch (selected) {
@@ -636,12 +618,13 @@ int menu() {
 		<< "6 Print out all the information about a single book by searching its title" << std::endl 
 		<< "7 Check out a book" << std::endl 
 		<< "8 Return a book" << std::endl 
-		<< "9 Quit" << std::endl;
+		<< "9 ?" << std::endl
+		<< "10 Quit" << std::endl;
 
-	std::cout << std::endl << "Enter 1 - 9 to make a selection: ";
+	std::cout << std::endl << "Enter 1 - 10 to make a selection: ";
 
 	int selected = 0;
-	selected = verify_input(1, 9);
+	selected = verify_input(1, 10);
 
 	/*int selected = 0;
 	std::string line;
@@ -709,6 +692,11 @@ void menu_selection(int selected, library* archive, int num_books,
 		reshelf_book(archive, num_books);
 		break;
 	case 9:
+		// Note describing case 9
+		// functions here
+		back_to_menu(); // prevents menu from printing after functions are called until user wants to return to menu. 
+		break;
+	case 10:
 		// Quit
 		end_message();
 		break;
@@ -736,7 +724,7 @@ int main() {
 		selected = menu();
 		menu_selection(selected, archive, num_books, authors, num_authors);
 
-	} while (selected != 9);
+	} while (selected != 10);
 
 	delete[] authors;
 	delete[] archive;
