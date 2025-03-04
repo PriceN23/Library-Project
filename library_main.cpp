@@ -2,9 +2,10 @@
 Midterm Project Default Proposal
 CompSci 222 - 01	03/09/2025
 Troy Poniewaz & Nicholas Price 
+Files: library.h, library.cpp, library_main.cpp
 Stretch Goals
-1.
-2.
+1. Sort books owned by library by thier title (alphabetical ascending or descenting order)
+2. Donate book to the library
 3.
 */
 #include <iostream>
@@ -183,11 +184,6 @@ void sort_alphabetical_descending(library* archive, int num_books) {
         }
     }
 }
-void donate_book()
-{
-	
-}
-
 
 // Stretch goal #1
 void selection_sort(library* archive, int num_books, int selected) {
@@ -244,6 +240,46 @@ library* fill_archive(const std::string& path, int count) {
 		stream.close();
 	}
 	return archive;
+}
+
+void donate_book(library* archive, int num_books ) {
+	library* donated_archive = new library[num_books + 1];
+
+	std::string line;
+
+	for (int i = 0; i < num_books; i++) {
+		donated_archive[i] = archive[i];
+	}
+
+	std::cout << std::endl << "Title name: ";
+	std::getline(std::cin, line);
+	std::string title = line;
+
+	std::cout << "Published name: ";
+	std::getline(std::cin, line);
+	unsigned short published = 0;
+	if (verify_int(line) == true) {
+		published = std::stoi(line);
+	}
+
+	std::getline(std::cin, line);
+	std::string author = line;
+
+	std::getline(std::cin, line);
+	unsigned short page_count = 0;
+	if (verify_int(line) == true) {
+		page_count = std::stoi(line);
+	}
+
+	std::getline(std::cin, line);
+	std::string genre = line;
+
+	donated_archive[num_books + 1] = library(title, author, genre, page_count, published, "No");
+
+	delete[] archive;
+	delete[] donated_archive;
+
+	//return donated_archive;
 }
 
 int get_num_authors(const library* archive, int num_books) {
@@ -536,7 +572,7 @@ void check_out_book(library* archive, int num_books) {
 	std::cout << std::endl << "Titles are case and space sensitive, enter 1 to return to menu" << std::endl;
 	std::cout << "Enter title of book to check out: ";
 
-	title = verify_input(false, archive, num_books);
+	title = verify_input(true, archive, num_books);
 
 	/*do {
 		std::getline(std::cin, title);
@@ -698,7 +734,7 @@ void menu_selection(int selected, library* archive, int num_books,
 		break;
 	case 9:
 		// Note describing case 9
-		// functions here
+		donate_book(archive, num_books);
 		back_to_menu(); // prevents menu from printing after functions are called until user wants to return to menu. 
 		break;
 	case 10:
