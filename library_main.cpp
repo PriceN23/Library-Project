@@ -69,7 +69,37 @@ void sort_page_length_descending(library* archive, int num_books) {
 	}
 }
 
-// Stretch goal #1: Some base templete function names have been added that can be build one 
+void sort_alphabetical_ascending(library* archive, int num_books) {
+    for (int i = 0; i < num_books - 1; i++) {
+        int min_index = i;
+
+        for (int j = i + 1; j < num_books; j++) {
+            if (archive[j].get_title() < archive[min_index].get_title()) {
+                min_index = j;
+            }
+        }
+        if (min_index != i) {
+            std::swap(archive[i], archive[min_index]);
+        }
+    }
+}
+
+void sort_alphabetical_descending(library* archive, int num_books) {
+    for (int i = 0; i < num_books - 1; i++) {
+        int max_index = i;
+
+        for (int j = i + 1; j < num_books; j++) {
+            if (archive[j].get_title() > archive[max_index].get_title()) {
+                max_index = j;
+            }
+        }
+        if (max_index != i) {
+            std::swap(archive[i], archive[max_index]);
+        }
+    }
+}
+
+// Stretch goal #1
 void selection_sort(library* archive, int num_books, int selected) {
 	switch (selected) {
 	case 1:
@@ -79,10 +109,10 @@ void selection_sort(library* archive, int num_books, int selected) {
 		sort_page_length_descending(archive, num_books);
 		break;
 	case 3:
-		//sort_alphobtical_ascending(archive, num_books); // New function can be created
+		sort_alphabetical_ascending(archive, num_books); 
 		break;
 	case 4:
-		//sort_alphobtical_descending(archive, num_books); // New function can be created
+		sort_alphabetical_descending(archive, num_books); 
 		break;
 	default:
 		break;
@@ -198,13 +228,15 @@ int get_newest_book(const library* archive, int num_books) {
 	return newest_book;
 }
 
-// Stretch goal #1, modify this code to accomadate new sorting types
+// Stretch goal #1
 void prompt_sort(library* archive, int num_books) {
 	std::cout << "Sort library archive" << std::endl 
 		<< "1 Ascending order" << std::endl 
-		<< "2 Descending order" << std::endl;
+		<< "2 Descending order" << std::endl
+		<< "3 Ascending alphabetical order" << std::endl
+		<< "4 Descending alphabetical order" << std::endl;
 
-	std::cout << std::endl << "Enter 1 or 2 to make selection: ";
+	std::cout << std::endl << "Enter 1, 2, 3 or 4 to make selection: ";
 
 	int selected = 0;
 	std::string line;
@@ -215,7 +247,7 @@ void prompt_sort(library* archive, int num_books) {
 		if (verify_int(line) == false
 			|| line.empty() == true
 			|| std::stoi(line) < 1
-			|| std::stoi(line) > 2) {
+			|| std::stoi(line) > 4) {
 
 			invalid_entry();
 		}
