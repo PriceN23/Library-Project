@@ -659,7 +659,7 @@ int menu() {
 		<< "6 Print out all the information about a single book by searching its title" << std::endl 
 		<< "7 Check out a book" << std::endl 
 		<< "8 Return a book" << std::endl 
-		<< "9 ?" << std::endl
+		<< "9 Donate a book" << std::endl
 		<< "10 Quit" << std::endl;
 
 	std::cout << std::endl << "Enter 1 - 10 to make a selection: ";
