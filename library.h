@@ -1,3 +1,12 @@
+/*
+Midterm Project Default Proposal
+CompSci 222 - 01	03/09/2025
+Troy Poniewaz & Nicholas Price
+Stretch Goals
+1.
+2.
+3.
+*/
 #pragma once
 #include <iostream>
 #include <string>

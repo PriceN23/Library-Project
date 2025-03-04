@@ -1,3 +1,12 @@
+/*
+Midterm Project Default Proposal
+CompSci 222 - 01	03/09/2025
+Troy Poniewaz & Nicholas Price 
+Stretch Goals
+1.
+2.
+3.
+*/
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -21,6 +30,82 @@ bool verify_int(const std::string& input) {
 	}
 
 	return true;
+}
+
+int verify_input() {
+	int selected = 0;
+	std::string line;
+
+	do {
+		std::getline(std::cin, line);
+
+		if (verify_int(line) == false || line.empty() == true) {
+
+			invalid_entry();
+		}
+		else {
+			selected = std::stoi(line);
+		}
+	} while (selected == 0);
+
+	return selected;
+}
+
+int verify_input(int lower_bound, int upper_bound) {
+	int selected = 0;
+	std::string line;
+	
+	do {
+		std::getline(std::cin, line);
+
+		if (verify_int(line) == false || line.empty() == true
+			|| std::stoi(line) < lower_bound || std::stoi(line) > upper_bound) {
+
+			invalid_entry();
+		}
+		else {
+			selected = std::stoi(line);
+		}
+	} while (selected < lower_bound || selected > upper_bound);
+
+	return selected;
+}
+
+std::string verify_input(bool title_available, const library* archive, int num_books) {
+	std::string title = "Unknown";
+	std::string available = "Yes";
+	int selected = 0;
+
+	if (title_available == false) {
+		available = "No";
+	}
+
+	do {
+		std::getline(std::cin, title);
+
+		if (verify_int(title) == true && title.empty() == false && std::stoi(title) == 1) {
+			selected = std::stoi(title);
+		}
+
+		if (selected == 0) {
+			for (int i = 0; i < num_books; i++) {
+				if (archive[i].get_title().compare(title) == false && archive[i].get_reserved() == available) {
+					if (title_available == true) {
+						title_available == false;
+					}
+					else {
+						title_available == true;
+					}
+				}
+			}
+
+			if (title.empty() == true || title_available == title_available) {
+				invalid_entry();
+			}
+		}
+	} while (title_available == title_available && selected == 0);
+
+	return title;
 }
 
 int get_line_count(const std::string& path) {
@@ -89,7 +174,6 @@ void selection_sort(library* archive, int num_books, int selected) {
 	}
 }
 
-
 library* fill_archive(const std::string& path, int count) {
 	library* archive = new library[count];
 
@@ -151,15 +235,15 @@ std::string* build_array_of_authors(const library* archive, int num_books, int n
 	std::string* authors = new std::string[num_authors];
 
 	for (int i = 0; i < num_books; i++) {
-		bool author_needs_added_to_authors = true;
+		bool add_author = true;
 
 		for (int j = 0; j < num_authors; j++) {
 			if (archive[i].get_author().compare(authors[j]) == false) {
-				author_needs_added_to_authors = false;
+				add_author = false;
 			}
 		}
 
-		if (author_needs_added_to_authors == true) {
+		if (add_author == true) {
 			bool author_added = false;
 
 			for (int j = 0; j < num_authors; j++) {
@@ -207,6 +291,9 @@ void prompt_sort(library* archive, int num_books) {
 	std::cout << std::endl << "Enter 1 or 2 to make selection: ";
 
 	int selected = 0;
+	selected = verify_input(1, 2);
+
+	/*int selected = 0;
 	std::string line;
 
 	do {
@@ -222,7 +309,7 @@ void prompt_sort(library* archive, int num_books) {
 		else {
 			selected = std::stoi(line);
 		}
-	} while (selected == 0);
+	} while (selected == 0);*/
 
 	selection_sort(archive, num_books, selected);
 
@@ -275,6 +362,9 @@ void print_books_of_selected_author(const library* archive, int num_books, const
 	std::cout << std::endl << "Select author 1 - " << num_authors << " to print book list: ";
 
 	int selected = 0;
+	selected  = verify_input(1, num_authors);
+
+	/*int selected = 0;
 	std::string line;
 
 	do {
@@ -290,7 +380,7 @@ void print_books_of_selected_author(const library* archive, int num_books, const
 		else {
 			selected = std::stoi(line);
 		}
-	} while (selected < 1 || selected > num_authors);
+	} while (selected < 1 || selected > num_authors);*/
 
 	selected--;
 	std::cout << std::endl;
@@ -310,6 +400,9 @@ void print_books_after_certain_year(const library* archive, int num_books) {
 	std::cout << "Enter year to display all books published on or after entered date: ";
 
 	int selected = 0;
+	selected = verify_input();
+
+	/*int selected = 0;
 	std::string line;
 
 	do {
@@ -323,7 +416,7 @@ void print_books_after_certain_year(const library* archive, int num_books) {
 		else {
 			selected = std::stoi(line);
 		}
-	} while (selected == 0);
+	} while (selected == 0);*/
 
 	std::cout << std::endl;
 
@@ -400,13 +493,15 @@ void check_out_book(library* archive, int num_books) {
 	print_available_books(archive, num_books);
 
 	std::string title = "Unknown";
-	bool title_available = false;
-	int selected = 0;
+	/*bool title_available = false;
+	int selected = 0;*/
 
 	std::cout << std::endl << "Titles are case and space sensitive, enter 1 to return to menu" << std::endl;
 	std::cout << "Enter title of book to check out: ";
 
-	do {
+	title = verify_input(false, archive, num_books);
+
+	/*do {
 		std::getline(std::cin, title);
 
 		if (verify_int(title) == true && title.empty() == false && std::stoi(title) == 1) {
@@ -424,7 +519,7 @@ void check_out_book(library* archive, int num_books) {
 				invalid_entry();
 			}
 		}		
-	} while (title_available == false && selected == 0);
+	} while (title_available == false && selected == 0);*/
 
 	std::cout << std::endl;
 
@@ -442,13 +537,15 @@ void reshelf_book(library* archive, int num_books) {
 	print_checked_out_books(archive, num_books);
 
 	std::string title = "Unknown";
-	bool title_reserved = true;
-	int selected = 0;
+	/*bool title_available = true;
+	int selected = 0;*/
 
 	std::cout << std::endl << "Titles are case and space sensitive, enter 1 to return to menu" << std::endl;
 	std::cout << "Enter title of book to return: ";
 
-	do {
+	title = verify_input(true, archive, num_books);
+
+	/*do {
 		std::getline(std::cin, title);
 
 		if (verify_int(title) == true && title.empty() == false && std::stoi(title) == 1) {
@@ -465,7 +562,7 @@ void reshelf_book(library* archive, int num_books) {
 				invalid_entry();
 			}
 		}
-	} while (title_reserved == true && selected == 0);
+	} while (title_reserved == true && selected == 0);*/
 
 	std::cout << std::endl;
 
@@ -491,10 +588,13 @@ int menu() {
 		<< "8 Return a book" << std::endl 
 		<< "9 Quit" << std::endl;
 
-	int selected = 0;
-	std::string line;
-
 	std::cout << std::endl << "Enter 1 - 9 to make a selection: ";
+
+	int selected = 0;
+	selected = verify_input(1, 9);
+
+	/*int selected = 0;
+	std::string line;
 
 	do {
 		std::getline(std::cin, line);
@@ -509,7 +609,7 @@ int menu() {
 		else {
 			selected = std::stoi(line);
 		}
-	} while (selected == 0);
+	} while (selected == 0);*/
 
 	std::cout << std::endl;
 
