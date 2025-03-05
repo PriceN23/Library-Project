@@ -10,6 +10,7 @@ Stretch Goals
 #pragma once
 #include <iostream>
 #include <string>
+#include <chrono>
 
 class library {
 private:
@@ -19,6 +20,9 @@ private:
 	unsigned short page_count; // page length 
 	unsigned short published;
 	std::string reserved; // checked out
+	std::chrono::system_clock::time_point checkout_date;
+    std::chrono::system_clock::time_point return_date;
+
 
 	// these should not be altered unless done direclty through the library constructor for newly archived books
 	void set_title(std::string title);
@@ -26,6 +30,8 @@ private:
 	void set_genre(std::string genre);
 	void set_page_count(unsigned short page_count);
 	void set_published(unsigned short published);
+	
+  
 
 public:
 	library();
@@ -39,6 +45,10 @@ public:
 	unsigned short get_page_count() const;
 	unsigned short get_published() const;
 	std::string get_reserved() const;
+	std::chrono::system_clock::time_point get_checkout_date() const;
+    std::chrono::system_clock::time_point get_return_date() const;
+	void set_checkout_date(std::chrono::system_clock::time_point checkout_date);
+    void set_return_date(std::chrono::system_clock::time_point return_date);
 
 	// reserved can be set Yes or No as needed
 	void set_reserved(std::string reserved);

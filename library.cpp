@@ -10,6 +10,7 @@ Stretch Goals
 #include <iostream>
 #include <string>
 #include "library.h"
+#include <chrono>
 
 library::library() {
 	title = "Untitled";
@@ -54,6 +55,14 @@ unsigned short library::get_published() const {
 
 std::string library::get_reserved() const {
 	return reserved;
+}
+
+std::chrono::system_clock::time_point library::get_checkout_date() const {
+    return checkout_date;
+}
+
+std::chrono::system_clock::time_point library::get_return_date() const {
+    return return_date;
 }
 
 // setters
@@ -110,6 +119,14 @@ void library::set_reserved(std::string reserved) {
 		throw std::invalid_argument("Reserved must be case sensitive true or fale.");
 	}
 }
+void library::set_checkout_date(std::chrono::system_clock::time_point checkout_date) {
+    this->checkout_date = checkout_date;
+}
+
+void library::set_return_date(std::chrono::system_clock::time_point return_date) {
+    this->return_date = return_date;
+}
+
 
 // print
 void library::print() const {

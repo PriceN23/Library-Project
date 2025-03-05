@@ -13,6 +13,7 @@ Stretch Goals
 #include <fstream>
 #include <cctype>
 #include <algorithm>
+#include <chrono>
 #include "library.h"
 
 void invalid_entry() {
@@ -599,8 +600,15 @@ void check_out_book(library* archive, int num_books) {
 	for (int i = 0; i < num_books; i++) {
 		if (archive[i].get_reserved() == "No" && archive[i].get_title() == title) {
 			archive[i].set_reserved("Yes");
+		    auto checkout_date = std::chrono::system_clock::now();
+			auto return_date = checkout_date + std::chrono::duration<int>(14);
+			archive[i].set_checkout_date(checkout_date);
+            archive[i].set_return_date(return_date);
 			std::cout << "Checked out '" << title << "' successfully" << std::endl;
-			// nestle stretch goal fives function here
+            std::time_t checkout_time = std::chrono::system_clock::to_time_t(checkout_date);
+            std::time_t return_time = std::chrono::system_clock::to_time_t(return_date);
+            std::cout << "Checkout Date: " << std::ctime(&checkout_time);
+            std::cout << "Return Date: " << std::ctime(&return_time);
 			back_to_menu();
 		}
 	}
