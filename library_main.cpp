@@ -112,7 +112,7 @@ std::string verify_input(bool reserved, const library* archive, int num_books) {
 	return title;
 }
 
-std::string verify_input(const library* archive, int num_books) {
+std::string verify_title(const library* archive, int num_books) {
 	std::string title = "";
 	bool title_available = false;
 	int selected = 0;
@@ -272,7 +272,7 @@ library* fill_archive(const std::string& path, int count) {
 	return archive;
 }
 
-void donate_book(library* archive, int num_books) {
+library* donate_book(library* archive, int num_books) {
 	library* donated_archive = new library[num_books + 1];
 
 	std::string line;
@@ -288,7 +288,7 @@ void donate_book(library* archive, int num_books) {
 	std::cout << "Published year: ";
 	std::getline(std::cin, line);
 	unsigned short published = 0;
-	if (verify_int(line) == false) {
+	if (verify_int(line) == true) {
 		published = std::stoi(line);
 	}
 
@@ -299,6 +299,7 @@ void donate_book(library* archive, int num_books) {
 	std::cout << "Page Count: ";
 	std::getline(std::cin, line);
 	unsigned short page_count = 0;
+
 	if (verify_int(line) == true) {
 		page_count = std::stoi(line);
 	}
@@ -307,12 +308,13 @@ void donate_book(library* archive, int num_books) {
 	std::getline(std::cin, line);
 	std::string genre = line;
 
-	donated_archive[num_books + 1] = library(title, author, genre, page_count, published, "No");
+	donated_archive[num_books] = library(title, author, genre, page_count, published, "No");
 
-	//delete[] archive;
-	delete[] donated_archive;
+	delete[] archive;
 
-	//return donated_archive;
+	//delete[] donated_archive;
+
+	return donated_archive;
 }
 
 int get_num_authors(const library* archive, int num_books) {
@@ -504,7 +506,7 @@ void list_of_titles(const library* archive, int num_books) {
 	std::cout << std::endl << "Titles are case and space sensitive, enter 1 to return to menu" << std::endl;
 	std::cout << "Enter title of book to print all informaiton on that title: ";
 
-	title = verify_input(archive, num_books);
+	title = verify_title(archive, num_books);
 
 	std::cout << std::endl;
 
@@ -634,9 +636,8 @@ void menu_selection(int selected, library* archive, int num_books,
 		reshelf_book(archive, num_books);
 		break;
 	case 9:
-		// Note describing case 9
-		donate_book(archive, num_books);
-		back_to_menu(); // prevents menu from printing after functions are called until user wants to return to menu. 
+		// Donate a book
+		// Return to main and build new archive
 		break;
 	case 10:
 		// Quit
@@ -665,6 +666,16 @@ int main() {
 	do {
 		selected = menu();
 		menu_selection(selected, archive, num_books, authors, num_authors);
+
+		if (selected == 9) {
+			archive = donate_book(archive, num_books); 
+			num_books++;
+
+			num_authors = get_num_authors(archive, num_books);
+			delete[] authors;
+
+			authors = build_array_of_authors(archive, num_books, num_authors);
+		}
 
 	} while (selected != 10);
 
