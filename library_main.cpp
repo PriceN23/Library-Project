@@ -41,7 +41,7 @@ int verify_input() {
 	do {
 		std::getline(std::cin, line);
 
-		if (verify_int(line) == false || line.empty() == true) {
+		if (verify_int(line) == false || line.length() <= 0) {
 
 			invalid_entry();
 		}
@@ -60,7 +60,7 @@ int verify_input(int lower_bound, int upper_bound) {
 	do {
 		std::getline(std::cin, line);
 
-		if (verify_int(line) == false || line.empty() == true
+		if (verify_int(line) == false || line.length() <= 0
 			|| std::stoi(line) < lower_bound || std::stoi(line) > upper_bound) {
 
 			invalid_entry();
@@ -87,7 +87,7 @@ std::string verify_input(bool reserved, const library* archive, int num_books) {
 	do {
 		std::getline(std::cin, title);
 
-		if (verify_int(title) == true && title.empty() == false && std::stoi(title) == 1) {
+		if (verify_int(title) == true && title.length() > 0 && std::stoi(title) == 1) {
 			selected = std::stoi(title);
 		}
 
@@ -103,7 +103,7 @@ std::string verify_input(bool reserved, const library* archive, int num_books) {
 				}
 			}
 
-			if (title.empty() == true || value == reserved) {
+			if (title.length() <= 0 || value == reserved) {
 				invalid_entry();
 			}
 		}
@@ -120,7 +120,7 @@ std::string verify_title(const library* archive, int num_books) {
 	do {
 		std::getline(std::cin, title);
 
-		if (verify_int(title) == true && title.empty() == false && std::stoi(title) == 1) {
+		if (verify_int(title) == true && title.length() > 0 && std::stoi(title) == 1) {
 			selected = std::stoi(title);
 		}
 
@@ -131,7 +131,7 @@ std::string verify_title(const library* archive, int num_books) {
 				}
 			}
 
-			if (title.empty() == true || title_available == false) {
+			if (title.length() <= 0 || title_available == false) {
 				invalid_entry();
 			}
 		}
@@ -274,7 +274,6 @@ library* fill_archive(const std::string& path, int count) {
 
 library* donate_book(library* archive, int num_books) {
 	library* donated_archive = new library[num_books + 1];
-
 	std::string line;
 
 	for (int i = 0; i < num_books; i++) {
@@ -282,31 +281,77 @@ library* donate_book(library* archive, int num_books) {
 	}
 
 	std::cout << std::endl << "Title name: ";
-	std::getline(std::cin, line);
-	std::string title = line;
+	std::string title = "";
+	do {
+		std::getline(std::cin, line);
+
+		if (line.length() > 0) {
+			title = line;
+		}
+		else {
+			invalid_entry();
+		}
+	} while (title == "");
 
 	std::cout << "Published year: ";
-	std::getline(std::cin, line);
 	unsigned short published = 0;
-	if (verify_int(line) == true) {
-		published = std::stoi(line);
-	}
+	do {
+		std::getline(std::cin, line);
+
+		if (verify_int(line) == true && line.length() > 0 && std::stoi(line) > 0 && std::stoi(line) <= 2025) {
+			published = std::stoi(line);
+		}
+		else {
+			invalid_entry();
+		}
+	} while (published == 0);
 
 	std::cout << "Author's name: ";
-	std::getline(std::cin, line);
-	std::string author = line;
+	std::string author = "";
+	do {
+		std::getline(std::cin, line);
+
+		if (line.length() > 0) {
+			author = line;
+		}
+		else {
+			invalid_entry();
+		}
+	} while (author == "");
 
 	std::cout << "Page Count: ";
-	std::getline(std::cin, line);
 	unsigned short page_count = 0;
+	do {
+		std::getline(std::cin, line);
 
-	if (verify_int(line) == true) {
-		page_count = std::stoi(line);
-	}
+		if (verify_int(line) == true && line.length() > 0 && std::stoi(line) > 0 && std::stoi(line) <= 65500) {
+			page_count = std::stoi(line);
+		}
+		else {
+			invalid_entry();
+		}
+	} while (page_count == 0);
 
 	std::cout << "Genre: ";
-	std::getline(std::cin, line);
-	std::string genre = line;
+	std::string genre = "";
+	do {
+		std::getline(std::cin, line);
+
+		if (line.length() > 0) {
+			genre = line;
+		}
+		else {
+			invalid_entry();
+		}
+	} while (genre == "");
+
+	std::cout << std::endl << "Book being donated: " << std::endl << "'" << title << "' By " << author << ", Published "
+		<< published << " [" << genre << "] (Page Count: "
+		<< page_count << ")" << std::endl << std::endl;
+
+	std::cout << "1 return to main menu" << std::endl << "2 confirm book donation" << std::endl << std::endl << "Enter 1 - 2 to make selection: ";
+
+	//back_to_menu();
 
 	donated_archive[num_books] = library(title, author, genre, page_count, published, "No");
 
@@ -353,7 +398,7 @@ std::string* build_array_of_authors(const library* archive, int num_books, int n
 			bool author_added = false;
 
 			for (int j = 0; j < num_authors; j++) {
-				if (authors[j].empty() == true && author_added == false) {
+				if (authors[j].length() <= 0 && author_added == false) {
 					authors[j] = archive[i].get_author();
 					author_added = true;
 				}
@@ -487,7 +532,7 @@ void back_to_menu() {
 	do {
 		std::getline(std::cin, line);
 
-		if (verify_int(line) == false || line.empty() == true || std::stoi(line) != 1) {
+		if (verify_int(line) == false || line.length() <= 0 || std::stoi(line) != 1) {
 			invalid_entry();
 		}
 		else {

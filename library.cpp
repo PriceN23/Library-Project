@@ -94,7 +94,7 @@ void library::set_genre(std::string genre) {
 }
 
 void library::set_page_count(unsigned short page_count) {
-	if (page_count > 0 && page_count < 25000) {
+	if (page_count > 0 && page_count < 65500) {
 		this->page_count = page_count;
 	}
 	else {
@@ -103,7 +103,7 @@ void library::set_page_count(unsigned short page_count) {
 }
 
 void library::set_published(unsigned short published) {
-	if (published >= 868 && published <= 2025) {
+	if (published >= 0 && published <= 2025) {
 		this->published = published;
 	}
 	else {
