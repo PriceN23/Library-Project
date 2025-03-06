@@ -715,27 +715,7 @@ void check_out_book(library *archive, int num_books)
 		if (archive[i].get_reserved() == "No" && archive[i].get_title() == title)
 		{
 			archive[i].set_reserved("Yes");
-			char checkout_buffer[26];
-			char return_buffer[26];
-			auto checkout_date = std::chrono::system_clock::now();
-			auto return_date = checkout_date + std::chrono::duration<int>(1209600);
-			archive[i].set_checkout_date(checkout_date);
-			archive[i].set_return_date(return_date);
 			std::cout << "Checked out '" << title << "' successfully" << std::endl;
-
-			struct tm checkout_tm, return_tm;
-
-			localtime_s(&checkout_tm, &checkout_time);
-			localtime_s(&return_tm, &return_time);
-
-			char checkout_buffer[100], return_buffer[100];
-
-			std::strftime(checkout_buffer, sizeof(checkout_buffer), "%c", &checkout_tm);
-			std::strftime(return_buffer, sizeof(return_buffer), "%c", &return_tm);
-
-			std::cout << "Checkout Date: " << checkout_buffer << std::endl;
-			std::cout << "Return Date: " << return_buffer << std::endl;
-
 			back_to_menu();
 		}
 	}
