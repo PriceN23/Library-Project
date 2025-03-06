@@ -4,16 +4,15 @@ CompSci 222 - 01	03/09/2025
 Troy Poniewaz & Nicholas Price
 Files: library.h, library.cpp, library_main.cpp
 Stretch Goals
-1. Sort books owned by library by thier title (alphabetical ascending or descenting order)
+1. Sort books owned by library by their title (alphabetical ascending or descenting order)
 2. Donate book to the library
 3.
 */
-#include "library.h"
-#include <algorithm>
-#include <cctype>
-#include <fstream>
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <algorithm>
+#include "library.h"
 
 void invalid_entry()
 {
@@ -288,7 +287,7 @@ void selection_sort(library *archive, int num_books, int selected)
 	}
 }
 
-library *fill_archive(const std::string &path, int count)
+library* fill_archive(const std::string &path, int count)
 {
 	library *archive = new library[count];
 
@@ -328,7 +327,7 @@ library *fill_archive(const std::string &path, int count)
 	return archive;
 }
 
-library *donate_book(library *archive, int num_books)
+library* donate_book(library *archive, int num_books)
 {
 	library *donated_archive = new library[num_books + 1];
 	std::string line;
@@ -693,7 +692,6 @@ void list_of_titles(const library *archive, int num_books)
 	}
 }
 
-// modify this for stech goal 5.
 void check_out_book(library *archive, int num_books)
 {
 	print_available_books(archive, num_books);
@@ -710,10 +708,11 @@ void check_out_book(library *archive, int num_books)
 
 	for (int i = 0; i < num_books; i++)
 	{
-		if (archive[i].get_reserved() == "No" && archive[i].get_title() == title)
-		{
+		if (archive[i].get_reserved() == "No" && archive[i].get_title() == title) {
 			archive[i].set_reserved("Yes");
+			
 			std::cout << "Checked out '" << title << "' successfully" << std::endl;
+
 			back_to_menu();
 		}
 	}
