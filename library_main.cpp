@@ -2,11 +2,12 @@
 Midterm Project Default Proposal
 CompSci 222 - 01	03/09/2025
 Troy Poniewaz & Nicholas Price
+
 Files: library.h, library.cpp, library_main.cpp
 Stretch Goals
 1. Sort books owned by library by their title (alphabetical ascending or descenting order)
 2. Donate book to the library
-3.
+3. Update CSV file with donated books
 */
 #include <iostream>
 #include <string>
@@ -21,7 +22,7 @@ void invalid_entry()
 
 void end_messege()
 {
-	std::cout << "Thank you, have a great day" << std::endl;
+	std::cout << std::endl << "Update complete, have a great day!" << std::endl;
 }
 
 bool verify_int(const std::string &input)
@@ -819,13 +820,35 @@ void menu_selection(int selected, library *archive, int num_books,
 		break;
 	case 10:
 		// Quit
-		end_messege();
 		break;
 	default:
 		invalid_entry();
 		back_to_menu();
 		break;
 	}
+}
+
+void update_arhcive_file(const library* archive, int num_books) {
+	std::cout << "Updating library archive..." << std::endl;
+	
+	const std::string path = "Data\\Library-List.csv";
+
+	std::ofstream output;
+
+	output.open(path);
+	if (output.is_open()) {
+		output << "Published" << "," << "Title" << "," << "Author" << "," << "Page Count" 
+			<< "," << "Genre" << "," << "Reserved" << std::endl;
+		for (int i = 0; i < num_books; i++) {
+			output << archive[i].get_published() << ","
+				<< archive[i].get_title() << ","
+				<< archive[i].get_author() << ","
+				<< archive[i].get_page_count() << ","
+				<< archive[i].get_genre() << ","
+				<< archive[i].get_reserved() << std::endl;
+		}
+	}
+	output.close();
 }
 
 int main()
@@ -859,6 +882,10 @@ int main()
 		}
 
 	} while (selected != 10);
+
+	update_arhcive_file(archive, num_books);
+
+	end_messege();
 
 	delete[] authors;
 	delete[] archive;
