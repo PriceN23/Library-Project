@@ -581,15 +581,16 @@ void check_out_book(library* archive, int num_books) {
 	for (int i = 0; i < num_books; i++) {
 		if (archive[i].get_reserved() == "No" && archive[i].get_title() == title) {
 			archive[i].set_reserved("Yes");
-		    // auto checkout_date = std::chrono::system_clock::now();
-			// auto return_date = checkout_date + std::chrono::duration<int>(1209600);
-			// archive[i].set_checkout_date(checkout_date);
-            // archive[i].set_return_date(return_date);
+		    auto checkout_date = std::chrono::system_clock::now();
+			auto return_date = checkout_date + std::chrono::duration<int>(1209600);
+			archive[i].set_checkout_date(checkout_date);
+            archive[i].set_return_date(return_date);
 			std::cout << "Checked out '" << title << "' successfully" << std::endl;
-            // std::time_t checkout_time = std::chrono::system_clock::to_time_t(checkout_date);
-            // std::time_t return_time = std::chrono::system_clock::to_time_t(return_date);
-            // std::cout << "Checkout Date: " << std::ctime(&checkout_time);
-            // std::cout << "Return Date: " << std::ctime(&return_time);
+            std::time_t checkout_time = std::chrono::system_clock::to_time_t(checkout_date);
+            std::time_t return_time = std::chrono::system_clock::to_time_t(return_date);
+            std::cout << "Checkout Date: " << std::put_time(std::localtime(&checkout_time), "%c") << std::endl;
+			std::cout << "Return Date: " << std::put_time(std::localtime(&return_time), "%c") << std::endl;
+
 			back_to_menu();
 		}
 	}
