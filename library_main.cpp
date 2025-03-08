@@ -431,6 +431,7 @@ if (genre.length() > 0){
 			  << std::endl
 			  << "Enter 1 - 2 to make selection: ";
 }
+else{}
 	// back_to_menu();
 
 	donated_archive[num_books] = library(title, author, genre, page_count, published, "No");
