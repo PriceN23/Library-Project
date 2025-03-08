@@ -418,7 +418,7 @@ library* donate_book(library *archive, int num_books)
 			invalid_entry();
 		}
 	} while (genre == "");
-
+if (genre.length() > 0){
 	std::cout << std::endl
 			  << "Book being donated: " << std::endl
 			  << "'" << title << "' By " << author << ", Published "
@@ -430,7 +430,7 @@ library* donate_book(library *archive, int num_books)
 			  << "2 confirm book donation" << std::endl
 			  << std::endl
 			  << "Enter 1 - 2 to make selection: ";
-
+}
 	// back_to_menu();
 
 	donated_archive[num_books] = library(title, author, genre, page_count, published, "No");
