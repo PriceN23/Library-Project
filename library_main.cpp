@@ -5,7 +5,7 @@ Troy Poniewaz & Nicholas Price
 
 Files: library.h, library.cpp, library_main.cpp
 Stretch Goals
-1. Sort books owned by library by their title (alphabetical ascending or descenting order)
+1. Sort books owned by library by their title (alphabetical ascending and descending order)
 2. Donate book to the library
 3. Update CSV file with donated books
 */
@@ -17,10 +17,10 @@ Stretch Goals
 
 void invalid_entry()
 {
-	std::cout << "Invalid entry, please make another selection: ";
+	std::cout << "Invailid entry, please make another selection: ";
 }
 
-void end_message()
+void end_messege()
 {
 	std::cout << std::endl << "Update complete, have a great day!" << std::endl;
 }
@@ -328,6 +328,29 @@ library* fill_archive(const std::string &path, int count)
 	return archive;
 }
 
+void back_to_menu()
+{
+	std::cout << std::endl
+		<< "Press 1 to return back to menu: ";
+
+	int selected = 0;
+	std::string line;
+
+	do
+	{
+		std::getline(std::cin, line);
+
+		if (verify_int(line) == false || line.length() <= 0 || std::stoi(line) != 1)
+		{
+			invalid_entry();
+		}
+		else
+		{
+			selected = std::stoi(line);
+		}
+	} while (selected != 1);
+}
+
 library* donate_book(library *archive, int num_books)
 {
 	library *donated_archive = new library[num_books + 1];
@@ -338,8 +361,7 @@ library* donate_book(library *archive, int num_books)
 		donated_archive[i] = archive[i];
 	}
 
-	std::cout << std::endl
-			  << "Title name: ";
+	std::cout << "Title name: ";
 	std::string title = "";
 	do
 	{
@@ -420,55 +442,19 @@ library* donate_book(library *archive, int num_books)
 		}
 	} while (genre == "");
 
+	donated_archive[num_books] = library(title, author, genre, page_count, published, "No");
+
 	std::cout << std::endl
-			  << "Book being donated: " << std::endl
-			  << "'" << title << "' By " << author << ", Published "
-			  << published << " [" << genre << "] (Page Count: "
-			  << page_count << ")" << std::endl
-			  << std::endl;
+		<< "Book donated: " << std::endl
+		<< "'" << title << "' By " << author << ", Published "
+		<< published << " [" << genre << "] (Page Count: "
+		<< page_count << ")" << std::endl;
 
+	back_to_menu();
 
-	std::cout << "1 return to main menu" << std::endl
-		<< "2 confirm book donation" << std::endl
-		<< std::endl
-		<< "Enter 1 - 2 to make selection: ";
-	
-	int value = 0;
-	do
-	{
-		std::getline(std::cin, line);
+	delete[] archive;
 
-		if (verify_int(line) == true && line.length() > 0 && (std::stoi(line) == 1 || std::stoi(line) == 2))
-		{
-			value = std::stoi(line);
-		}
-		else
-		{
-			invalid_entry();
-		}
-	} while (value == 0);
-
-	if (verify_input(1,2) == 1) { 
-		delete[] donated_archive; 
-		return archive;
-	} 
-	else  {
-		donated_archive[num_books] = library(title, author, genre, page_count, published, "No");
-		
-		delete[] archive;
-		return donated_archive;
-	}
-
-
-	// back_to_menu();
-
-	//donated_archive[num_books] = library(title, author, genre, page_count, published, "No");
-
-	//delete[] archive;
-
-	// delete[] donated_archive;
-
-	//return donated_archive;
+	return donated_archive;
 }
 
 int get_num_authors(const library *archive, int num_books)
@@ -672,29 +658,6 @@ void print_books_after_certain_year(const library *archive, int num_books)
 	}
 }
 
-void back_to_menu()
-{
-	std::cout << std::endl
-			  << "Press 1 to return back to menu: ";
-
-	int selected = 0;
-	std::string line;
-
-	do
-	{
-		std::getline(std::cin, line);
-
-		if (verify_int(line) == false || line.length() <= 0 || std::stoi(line) != 1)
-		{
-			invalid_entry();
-		}
-		else
-		{
-			selected = std::stoi(line);
-		}
-	} while (selected != 1);
-}
-
 void list_of_titles(const library *archive, int num_books)
 {
 	std::cout << "Titles in library archive" << std::endl;
@@ -894,6 +857,8 @@ int main()
 
 	int selected = 0;
 
+	std::cout << "Default Proposal: Library Project" << std::endl << "By Troy Poniewaz and Nicholas Price" << std::endl;
+
 	do
 	{
 		selected = menu();
@@ -912,9 +877,11 @@ int main()
 
 	} while (selected != 10);
 
+	
+
 	update_arhcive_file(archive, num_books);
 
-	end_message();
+	end_messege();
 
 	delete[] authors;
 	delete[] archive;

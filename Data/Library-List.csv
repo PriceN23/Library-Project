@@ -1,6 +1,7 @@
 Published,Title,Author,Page Count,Genre,Reserved
 1976,Children of Dune,Frank Herbert,444,Fiction,No
 1965,Dune,Frank Herbert,412,Fiction,No
+1991,Dune 2,Nick,350,Fiction,No
 1969,Dune Messiah,Frank Herbert,352,Fiction,No
 1953,Farenheit 451,Ray Bradbury,249,Fiction,No
 1998,Harry Potter and the Chamber of Secrets,J.K. Rowling,352,Fiction,No
@@ -11,6 +12,8 @@ Published,Title,Author,Page Count,Genre,Reserved
 1999,Harry Potter and the Prisoner of Azkaban,J.K. Rowling,435,Fiction,No
 1997,Harry Potter and the Sorcerer's Stone,J.K. Rowling,223,Fiction,No
 1946,Man's Search for Meaning,Viktor Frankl,196,Biography,No
+2025,No,Myslef,10,Fiction,No
+1850,Test book,Myslef,200,Biography,No
 1988,The Alchemist,Paulo Coelho,208,Fiction,No
 1997,The Cobra Event,Richard Preston,432,Fiction,No
 2002,The Demon in the Freezer,Richard Preston,304,Nonfiction,No
@@ -19,4 +22,5 @@ Published,Title,Author,Page Count,Genre,Reserved
 1955,The Return of the King,J.R.R. Tolkien,432,Fiction,No
 1954,The Two Towers,J.R.R. Tolkien,352,Fiction,No
 2003,The Zombie Survival Guide,Max Brooks,288,Fiction,No
-2025,No,Myslef,10,Fiction,No
+1995,Me,me,50,Fic,No
+1995,New,Yes,15,Fic,No
