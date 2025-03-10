@@ -28,6 +28,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
+    <None Include="Data\Library-List.csv" />
   </ItemGroup>
 </Project>
