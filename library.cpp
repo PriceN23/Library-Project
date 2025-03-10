@@ -16,9 +16,8 @@ library::library() {
 	reserved = "Yes";
 }
 
-// custom constructor
-library::library(std::string title, std::string author,
-	std::string genre, unsigned short page_count, unsigned short published, std::string reserved) {
+library::library(std::string title, std::string author, std::string genre, 
+		unsigned short page_count, unsigned short published, std::string reserved) {
 	set_title(title);
 	set_author(author);
 	set_genre(genre);
@@ -27,7 +26,6 @@ library::library(std::string title, std::string author,
 	set_reserved(reserved);
 }
 
-// getters
 std::string library::get_title() const {
 	return title;
 }
@@ -52,7 +50,6 @@ std::string library::get_reserved() const {
 	return reserved;
 }
 
-// setters
 void library::set_title(std::string title) {
 	if (title.length() > 0) {
 		this->title = title;
@@ -107,7 +104,6 @@ void library::set_reserved(std::string reserved) {
 	}
 }
 
-// print
 void library::print() const {
 	if (get_reserved() == "No") {
 		std::cout << "'" << get_title() << "' By " << get_author() << ", Published " 
