@@ -730,6 +730,8 @@ int main() {
 
 	int num_books = get_line_count(path) - 1;
 
+	std::cout << num_books;
+
 	library *archive = fill_archive(path, num_books);
 
 	int num_authors = get_num_authors(archive, num_books);
