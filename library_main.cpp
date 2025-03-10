@@ -357,6 +357,7 @@ library* donate_book(library *archive, int num_books)
 
 	std::cout << "Published year: ";
 	unsigned short published = 0;
+
 	do
 	{
 		std::getline(std::cin, line);
@@ -426,21 +427,48 @@ library* donate_book(library *archive, int num_books)
 			  << page_count << ")" << std::endl
 			  << std::endl;
 
+
 	std::cout << "1 return to main menu" << std::endl
-			  << "2 confirm book donation" << std::endl
-			  << std::endl
-			  << "Enter 1 - 2 to make selection: ";
+		<< "2 confirm book donation" << std::endl
+		<< std::endl
+		<< "Enter 1 - 2 to make selection: ";
+	
+	int value = 0;
+	do
+	{
+		std::getline(std::cin, line);
+
+		if (verify_int(line) == true && line.length() > 0 && (std::stoi(line) == 1 || std::stoi(line) == 2))
+		{
+			value = std::stoi(line);
+		}
+		else
+		{
+			invalid_entry();
+		}
+	} while (vale == 0);
+
+	if (verify_input(1,2) == 1) { 
+		delete[] donated_archive; 
+		return archive;
+	} 
+	else  {
+		donated_archive[num_books] = library(title, author, genre, page_count, published, "No");
+		
+		delete[] archive;
+		return donated_archive;
+	}
 
 
 	// back_to_menu();
 
-	donated_archive[num_books] = library(title, author, genre, page_count, published, "No");
+	//donated_archive[num_books] = library(title, author, genre, page_count, published, "No");
 
-	delete[] archive;
+	//delete[] archive;
 
 	// delete[] donated_archive;
 
-	return donated_archive;
+	//return donated_archive;
 }
 
 int get_num_authors(const library *archive, int num_books)
