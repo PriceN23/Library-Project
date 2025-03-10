@@ -17,10 +17,10 @@ Stretch Goals
 
 void invalid_entry()
 {
-	std::cout << "Invailid entry, please make another selection: ";
+	std::cout << "Invalid entry, please make another selection: ";
 }
 
-void end_messege()
+void end_message()
 {
 	std::cout << std::endl << "Update complete, have a great day!" << std::endl;
 }
@@ -446,7 +446,7 @@ library* donate_book(library *archive, int num_books)
 		{
 			invalid_entry();
 		}
-	} while (vale == 0);
+	} while (value == 0);
 
 	if (verify_input(1,2) == 1) { 
 		delete[] donated_archive; 
@@ -914,7 +914,7 @@ int main()
 
 	update_arhcive_file(archive, num_books);
 
-	end_messege();
+	end_message();
 
 	delete[] authors;
 	delete[] archive;
